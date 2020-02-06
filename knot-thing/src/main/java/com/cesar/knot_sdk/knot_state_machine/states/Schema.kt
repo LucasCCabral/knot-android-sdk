@@ -44,7 +44,7 @@ class Schema : WaitingState() {
         val action = consumeMessage(message)
 
         return when(action) {
-            OpOk              -> TODO("This transition should lead to the online state, which does not exist yet")
+            OpOk              -> Online()
             OpNotOk           -> TODO("This transition should lead to the error state, which does not exist yet")
             Timeout           -> this
             EAGAIN            -> this
