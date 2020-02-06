@@ -30,7 +30,7 @@ class Disconnected : ProceduralState() {
         val action = getNextAction(message)
 
         return when (action) {
-            OpOk              -> TODO("This transition should lead to the connected state, which does not exist yet")
+            OpOk              -> Connected()
             OpNotOk           -> this
             Timeout           -> this
             EAGAIN            -> this
