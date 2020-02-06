@@ -49,7 +49,7 @@ class Authenticating : WaitingState() {
         val action = getNextAction(message)
 
         return when(action) {
-            OpOk              -> TODO("This transition should lead to the schema state which does not exist yet")
+            OpOk              -> Schema()
             OpNotOk           -> TODO("This transition should lead to the error state, which does not exist yet")
             Timeout           -> this
             EAGAIN            -> this
