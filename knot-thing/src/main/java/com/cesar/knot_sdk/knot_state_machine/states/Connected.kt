@@ -37,7 +37,7 @@ class Connected : BranchingState() {
 
         return when(action) {
             TaskDone          -> TODO("This transition should lead to the authenticating state which does not exist yet")
-            TaskNotDone       -> TODO("This transition should lead to the registering state, which does not exist yet")
+            TaskNotDone       -> Registering()
             Timeout           -> TODO("This transition should lead to the error state, which does not exist yet")
             EAGAIN            -> TODO("This transition should lead to the error state, which does not exist yet")
             ENOTCONN          -> TODO("This transition should lead to the error state, which does not exist yet")
