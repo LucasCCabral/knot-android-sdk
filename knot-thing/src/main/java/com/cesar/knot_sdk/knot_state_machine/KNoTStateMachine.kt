@@ -5,6 +5,7 @@ import com.cesar.knot_sdk.KNoTAMQP
 import com.cesar.knot_sdk.KNoTDataManager
 import com.cesar.knot_sdk.KNoTMessageParser
 import com.cesar.knot_sdk.KNoTMessager
+import com.cesar.knot_sdk.knot_state_machine.states.Disconnected
 import com.cesar.knot_sdk.knot_state_machine.states.base_classes.State
 import com.cesar.knot_sdk.knot_state_machine.states.base_classes.State.Companion.PROCEED_MESSAGE
 import com.cesar.knot_sdk.knot_state_machine.states.base_classes.branching_state.BranchingState
@@ -20,7 +21,7 @@ object KNoTStateMachine {
     const val PASSWORD = ""
 
     val knotAMQP = KNoTAMQP(USERNAME, PASSWORD, HOSTNAME, PORT_NUMBER)
-    lateinit var state : State
+    var state : State = Disconnected()
     lateinit var knotMessager : KNoTMessager
     lateinit var knotDataManager : KNoTDataManager
     lateinit var knotMessageParser : KNoTMessageParser
