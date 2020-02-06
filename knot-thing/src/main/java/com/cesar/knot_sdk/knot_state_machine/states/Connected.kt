@@ -36,7 +36,7 @@ class Connected : BranchingState() {
         val action = getNextAction(message)
 
         return when(action) {
-            TaskDone          -> TODO("This transition should lead to the authenticating state which does not exist yet")
+            TaskDone          -> Authenticating()
             TaskNotDone       -> Registering()
             Timeout           -> TODO("This transition should lead to the error state, which does not exist yet")
             EAGAIN            -> TODO("This transition should lead to the error state, which does not exist yet")
