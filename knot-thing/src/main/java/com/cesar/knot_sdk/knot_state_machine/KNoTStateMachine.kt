@@ -3,6 +3,7 @@ package com.cesar.knot_sdk.knot_state_machine
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Looper
+import androidx.work.WorkManager
 import com.cesar.knot_sdk.KNoTAMQP
 import com.cesar.knot_sdk.KNoTDataManager
 import com.cesar.knot_sdk.KNoTMessageParser
@@ -28,6 +29,7 @@ object KNoTStateMachine {
     val knotMessageParser = KNoTMessageParser()
     lateinit var context : Context
     lateinit var thingName : String
+    lateinit var publishDataScheduler : WorkManager
 
     private val looper = Looper.myLooper()
     private val timerHandler = Handler(looper)

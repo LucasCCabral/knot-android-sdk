@@ -10,6 +10,14 @@ class KNoTDataManager {
 
     fun addSensor(knotData : KNoTData<Any>) = knotDataPool.add(knotData)
 
+    fun getDataSensorIds() : List<Int> {
+        val sensorIds = mutableListOf<Int>()
+        knotDataPool.forEach {
+            sensorIds.add(it.getSensorId())
+        }
+        return sensorIds
+    }
+
     private fun getKNoTDataItem(id : Int) : KNoTData<Any> {
         knotDataPool.forEach { knotData ->
             if (knotData.getSensorId() == id) return knotData

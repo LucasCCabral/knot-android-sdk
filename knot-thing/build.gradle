@@ -37,6 +37,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.rabbitmq:amqp-client:5.7.3'
     implementation "org.jetbrains.anko:anko:$anko_version"
+    implementation "androidx.work:work-runtime-ktx:2.3.1"
     testImplementation 'junit:junit:4.12'
     testImplementation "io.mockk:mockk:1.9.3"
     androidTestImplementation 'androidx.test:runner:1.1.1'
