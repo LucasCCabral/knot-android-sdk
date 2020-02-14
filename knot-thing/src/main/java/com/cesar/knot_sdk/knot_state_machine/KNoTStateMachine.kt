@@ -6,6 +6,7 @@ import com.cesar.knot_sdk.KNoTAMQP
 import com.cesar.knot_sdk.KNoTDataManager
 import com.cesar.knot_sdk.KNoTMessageParser
 import com.cesar.knot_sdk.KNoTMessager
+import com.cesar.knot_sdk.knot_messages.KNoTMessageRegistered
 import com.cesar.knot_sdk.knot_state_machine.states.Disconnected
 import com.cesar.knot_sdk.knot_state_machine.states.base_classes.State
 import com.cesar.knot_sdk.knot_state_machine.states.base_classes.State.Companion.PROCEED_MESSAGE
@@ -50,6 +51,18 @@ object KNoTStateMachine {
         UUID_PREF,
         PREF_MISSING
     )
+
+    fun storeCredentials(res : KNoTMessageRegistered) {
+        sharedPref.edit().putString(
+            UUID_PREF,
+            res.id
+        ).apply()
+
+        sharedPref.edit().putString(
+            UUID_PREF,
+            res.token
+        ).apply()
+    }
 
     fun clearCredentials() {
         sharedPref.edit().putString(

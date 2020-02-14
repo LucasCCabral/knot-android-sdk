@@ -25,7 +25,7 @@ class Disconnected : State() {
     private fun getCorrectNextState() : State {
         val possibleStates = KNoTStateMachine.getUUID()
 
-        if(possibleStates == PREF_MISSING) TODO("Return register state once it's been created")
+        if(possibleStates == PREF_MISSING) return Registering()
         return TODO("Return authenticate state once it's been created")
     }
 
