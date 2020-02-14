@@ -27,7 +27,7 @@ class Registering : State() {
 
     private fun consumeMessage(res : KNoTMessageRegistered) : State {
         KNoTStateMachine.storeCredentials(res)
-        return TODO("Return schema state once it's been created")
+        return Schema()
     }
 
     override fun getNextState(event : KNoTEvent) = when(event) {

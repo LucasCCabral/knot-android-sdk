@@ -37,7 +37,7 @@ class Authenticating : State() {
     private fun getCorrectNextState() : State {
         if (schemaChanged()) {
             LogWrapper.log("State: Auth, Error: $error")
-            return TODO("Return schema state once it's been created")
+            return Schema()
         }
 
         return TODO("Return online state once it's been created")
