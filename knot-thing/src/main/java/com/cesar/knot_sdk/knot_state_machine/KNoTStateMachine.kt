@@ -50,4 +50,16 @@ object KNoTStateMachine {
         PREF_MISSING
     )
 
+    fun clearCredentials() {
+        sharedPref.edit().putString(
+            UUID_PREF,
+            PREF_MISSING
+        ).apply()
+
+        sharedPref.edit().putString(
+            TOKEN_PREF,
+            PREF_MISSING
+        ).apply()
+    }
+
 }
