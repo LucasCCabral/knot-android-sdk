@@ -1,6 +1,6 @@
 package com.cesar.knot_sdk.knot_state_machine.states
 
-import com.cesar.knot_sdk.knot_messages.KNoTMessageUpdateSchema
+import com.cesar.knot_sdk.knot_messages.KNoTMessageUpdateData
 import com.cesar.knot_sdk.knot_state_machine.KNoTStateMachine.getUUID
 import com.cesar.knot_sdk.knot_state_machine.KNoTStateMachine.knotMessager
 import com.cesar.knot_sdk.knot_state_machine.KNoTStateMachine.knotDataManager
@@ -9,21 +9,20 @@ import com.cesar.knot_sdk.knot_state_machine.states.base_classes.KNoTEvent.*
 import com.cesar.knot_sdk.knot_state_machine.states.base_classes.State
 import java.io.IOException
 
-class Schema : State() {
+class Online : State() {
 
     override fun enter() {
         val thingId = getUUID()
-        val updateSchema = KNoTMessageUpdateSchema(
+        val updateData = KNoTMessageUpdateData(
             thingId!!,
-            knotDataManager.getKNoTDataSchemas()
+            knotDataManager.getKNoTDataValues()
         )
 
         try {
-            knotMessager.updateSchema(updateSchema)
+            knotMessager.publishData(updateData)
         } catch (e : IOException) {
             error = NETWORK_ERROR_MESSAGE
         }
-
     }
 
     override fun getNextState(event : KNoTEvent) = when(event) {
@@ -34,8 +33,8 @@ class Schema : State() {
         is RegNotOk        -> this
         is AuthNotOk       -> this
         is AuthOk          -> this
-        is SchemaOk        -> Online()
-        is SchemaNotOk     -> Error()
+        is SchemaOk        -> this
+        is SchemaNotOk     -> this
         is UnregisterEvent -> Unregister()
     }
 

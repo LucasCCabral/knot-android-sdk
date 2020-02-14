@@ -40,7 +40,7 @@ class Authenticating : State() {
             return Schema()
         }
 
-        return TODO("Return online state once it's been created")
+        return Online()
     }
 
     override fun getNextState(event : KNoTEvent) = when(event) {
