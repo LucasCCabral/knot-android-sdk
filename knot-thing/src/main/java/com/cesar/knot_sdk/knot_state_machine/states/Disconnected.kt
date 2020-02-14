@@ -26,7 +26,7 @@ class Disconnected : State() {
         val possibleStates = KNoTStateMachine.getUUID()
 
         if(possibleStates == PREF_MISSING) return Registering()
-        return TODO("Return authenticate state once it's been created")
+        return Authenticating()
     }
 
     override fun getNextState(event : KNoTEvent) : State = when(event) {

@@ -27,7 +27,7 @@ object KNoTStateMachine {
     lateinit var context : Context
     lateinit var thingName : String
 
-    fun schemaChanged() = true
+    fun schemaChanged() = false
 
     val PREF_ID = "preference file key"
     val UUID_PREF = "uuid"
