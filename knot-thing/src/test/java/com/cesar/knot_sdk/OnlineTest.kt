@@ -2,8 +2,8 @@ package com.cesar.knot_sdk
 
 import com.cesar.knot_sdk.knot_messages.KNoTMessageAuthenticated
 import com.cesar.knot_sdk.knot_messages.KNoTMessageRegistered
+import com.cesar.knot_sdk.knot_messages.KNoTMessageRemoved
 import com.cesar.knot_sdk.knot_messages.KNoTMessageSchemaResp
-import com.cesar.knot_sdk.knot_messages.KNoTMessageUnregister
 import com.cesar.knot_sdk.knot_state_machine.states.Disconnected
 import com.cesar.knot_sdk.knot_state_machine.states.Online
 import com.cesar.knot_sdk.knot_state_machine.states.Unregister
@@ -13,7 +13,7 @@ import org.junit.Test
 class OnlineTest {
 
     private val randomThingId = "0123456789abcde"
-    private val nullOnline = "null"
+    private val nullError = "null"
     private val error = "non null error"
     private val randomToken = "random token"
     private val state = Online()
@@ -54,7 +54,7 @@ class OnlineTest {
     fun authOkEvent_isOnline() {
         val authOkMessage = KNoTMessageAuthenticated(
                 randomThingId,
-                nullOnline
+                nullError
         )
         val authOkEvent = AuthOk(authOkMessage)
         val nextState = state.getNextState(authOkEvent)
@@ -79,7 +79,7 @@ class OnlineTest {
         val regOkMessage = KNoTMessageRegistered(
                 randomThingId,
                 randomToken,
-                nullOnline
+                nullError
         )
         val regOkEvent = RegOK(regOkMessage)
         val nextState = state.getNextState(regOkEvent)
@@ -104,7 +104,7 @@ class OnlineTest {
     fun schemaOkEvent_isOnline() {
         val schemaOkMessage = KNoTMessageSchemaResp(
                 randomThingId,
-                nullOnline
+                nullError
         )
         val schemaOkEvent = SchemaOk(schemaOkMessage)
         val nextState = state.getNextState(schemaOkEvent)
@@ -125,9 +125,22 @@ class OnlineTest {
     }
 
     @Test
-    fun unregisterEvent_correctId_isUnregister() {
-        val unregisterMessage = KNoTMessageUnregister(
-                randomThingId
+    fun unregisterOk_isUnregister() {
+        val unregisterMessage = KNoTMessageRemoved(
+            randomThingId,
+            nullError
+        )
+        val unregisterEvent = UnregisterEvent(unregisterMessage)
+        val nextState = state.getNextState(unregisterEvent)
+
+        assert(nextState is Unregister)
+    }
+
+    @Test
+    fun unregisterNotOk_isUnregister() {
+        val unregisterMessage = KNoTMessageRemoved(
+            randomThingId,
+            error
         )
         val unregisterEvent = UnregisterEvent(unregisterMessage)
         val nextState = state.getNextState(unregisterEvent)

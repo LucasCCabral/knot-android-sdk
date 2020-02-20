@@ -2,6 +2,7 @@ package com.cesar.knot_sdk
 
 import com.cesar.knot_sdk.knot_messages.KNoTMessageAuthenticated
 import com.cesar.knot_sdk.knot_messages.KNoTMessageRegistered
+import com.cesar.knot_sdk.knot_messages.KNoTMessageRemoved
 import com.cesar.knot_sdk.knot_messages.KNoTMessageSchemaResp
 import com.cesar.knot_sdk.knot_messages.KNoTMessageUnregister
 import com.cesar.knot_sdk.knot_state_machine.KNoTStateMachine
@@ -9,6 +10,7 @@ import com.cesar.knot_sdk.knot_state_machine.KNoTStateMachine.PREF_MISSING
 import com.cesar.knot_sdk.knot_state_machine.states.Authenticating
 import com.cesar.knot_sdk.knot_state_machine.states.Disconnected
 import com.cesar.knot_sdk.knot_state_machine.states.Registering
+import com.cesar.knot_sdk.knot_state_machine.states.Unregister
 import com.cesar.knot_sdk.knot_state_machine.states.base_classes.KNoTEvent.*
 import io.mockk.every
 import io.mockk.mockkObject
@@ -136,13 +138,27 @@ class DisconnectedTest {
     }
 
     @Test
-    fun unregisterEvent_correctId_isDisconnected() {
-        val unregisterMessage = KNoTMessageUnregister(
-            randomThingId
+    fun unregisterOk_isDisconnected() {
+        val unregisterMessage = KNoTMessageRemoved(
+            randomThingId,
+            nullError
         )
         val unregisterEvent = UnregisterEvent(unregisterMessage)
         val nextState = state.getNextState(unregisterEvent)
 
         assert(nextState is Disconnected)
     }
+
+    @Test
+    fun unregisterNotOk_isDisconnected() {
+        val unregisterMessage = KNoTMessageRemoved(
+            randomThingId,
+            error
+        )
+        val unregisterEvent = UnregisterEvent(unregisterMessage)
+        val nextState = state.getNextState(unregisterEvent)
+
+        assert(nextState is Disconnected)
+    }
+
 }

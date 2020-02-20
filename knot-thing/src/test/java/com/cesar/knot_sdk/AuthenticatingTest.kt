@@ -2,6 +2,7 @@ package com.cesar.knot_sdk
 
 import com.cesar.knot_sdk.knot_messages.KNoTMessageAuthenticated
 import com.cesar.knot_sdk.knot_messages.KNoTMessageRegistered
+import com.cesar.knot_sdk.knot_messages.KNoTMessageRemoved
 import com.cesar.knot_sdk.knot_messages.KNoTMessageSchemaResp
 import com.cesar.knot_sdk.knot_messages.KNoTMessageUnregister
 import com.cesar.knot_sdk.knot_state_machine.KNoTStateMachine
@@ -149,9 +150,22 @@ class AuthenticatingTest {
     }
 
     @Test
-    fun unregisterEvent_correctId_isUnregister() {
-        val unregisterMessage = KNoTMessageUnregister(
-                randomThingId
+    fun unregisterOk_isUnregister() {
+        val unregisterMessage = KNoTMessageRemoved(
+                randomThingId,
+                nullError
+        )
+        val unregisterEvent = UnregisterEvent(unregisterMessage)
+        val nextState = state.getNextState(unregisterEvent)
+
+        assert(nextState is Unregister)
+    }
+
+    @Test
+    fun unregisterNotOk_isUnregister() {
+        val unregisterMessage = KNoTMessageRemoved(
+            randomThingId,
+            error
         )
         val unregisterEvent = UnregisterEvent(unregisterMessage)
         val nextState = state.getNextState(unregisterEvent)

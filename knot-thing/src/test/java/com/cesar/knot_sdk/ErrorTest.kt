@@ -2,8 +2,10 @@ package com.cesar.knot_sdk
 
 import com.cesar.knot_sdk.knot_messages.KNoTMessageAuthenticated
 import com.cesar.knot_sdk.knot_messages.KNoTMessageRegistered
+import com.cesar.knot_sdk.knot_messages.KNoTMessageRemoved
 import com.cesar.knot_sdk.knot_messages.KNoTMessageSchemaResp
 import com.cesar.knot_sdk.knot_messages.KNoTMessageUnregister
+import com.cesar.knot_sdk.knot_state_machine.states.Disconnected
 import com.cesar.knot_sdk.knot_state_machine.states.Error
 import com.cesar.knot_sdk.knot_state_machine.states.base_classes.KNoTEvent.*
 import org.junit.Test
@@ -123,9 +125,10 @@ class ErrorTest {
     }
 
     @Test
-    fun unregisterEvent_correctId_isError() {
-        val unregisterMessage = KNoTMessageUnregister(
-                randomThingId
+    fun unregisterOk_isError() {
+        val unregisterMessage = KNoTMessageRemoved(
+            randomThingId,
+            nullError
         )
         val unregisterEvent = UnregisterEvent(unregisterMessage)
         val nextState = state.getNextState(unregisterEvent)
@@ -133,4 +136,15 @@ class ErrorTest {
         assert(nextState is Error)
     }
 
+    @Test
+    fun unregisterNotOk_isError() {
+        val unregisterMessage = KNoTMessageRemoved(
+            randomThingId,
+            error
+        )
+        val unregisterEvent = UnregisterEvent(unregisterMessage)
+        val nextState = state.getNextState(unregisterEvent)
+
+        assert(nextState is Error)
+    }
 }
