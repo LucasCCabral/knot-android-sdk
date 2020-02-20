@@ -1,7 +1,6 @@
 package com.cesar.knot_sdk
 
-import com.cesar.knot_sdk.knot_messages.KNoTMessageRegistered
-import com.google.gson.Gson
+import com.cesar.knot_sdk.knot_state_machine.KNoTStateMachine
 import com.rabbitmq.client.AMQP
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.Connection
@@ -159,14 +158,18 @@ class KNoTAMQP(username : String, password : String, hostname : String, port : I
                     properties: AMQP.BasicProperties,
                     body: ByteArray
                 ) {
-                    val deliveryTag = envelope.getDeliveryTag()
-                    val bodyJson = String(body)
-                    val knotThingRegistered = Gson().fromJson(
-                        bodyJson,
-                        KNoTMessageRegistered::class.java
-                    )
-
-                    channel.basicAck(deliveryTag, false)
+                    val message = String(body)
+                    when (envelope.routingKey) {
+                        BINDING_KEY_REGISTERED    -> KNoTStateMachine.registerMessageReceived(message)
+                        BINDING_KEY_UNREGISTER    -> KNoTStateMachine.unregisterMessageReceived(message)
+                        BINDING_KEY_AUTHENTICATE  -> KNoTStateMachine.authMessageReceived(message)
+                        BINDING_KEY_SCHEMA_UPDATE -> KNoTStateMachine.schemaUpdateMessageReceived(message)
+                        BINDING_KEY_DATA_PUBLISH  -> KNoTStateMachine.dataRequestMessageReceived(message)
+                        BINDING_KEY_DATA_UPDATE   -> KNoTStateMachine.dataUpdateMessageReceived(message)
+                        else                      -> LogWrapper.log(
+                                "The received message does not belonged to a valid binding key"
+                            )
+                    }
                 }
             })
     }
@@ -181,5 +184,4 @@ class KNoTAMQP(username : String, password : String, hostname : String, port : I
             channel.close()
             conn.close()
     }
-
 }

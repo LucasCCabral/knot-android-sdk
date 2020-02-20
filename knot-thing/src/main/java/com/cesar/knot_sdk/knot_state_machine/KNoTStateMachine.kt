@@ -8,8 +8,8 @@ import com.cesar.knot_sdk.KNoTMessageParser
 import com.cesar.knot_sdk.KNoTMessager
 import com.cesar.knot_sdk.knot_messages.KNoTMessageRegistered
 import com.cesar.knot_sdk.knot_state_machine.states.Disconnected
+import com.cesar.knot_sdk.knot_state_machine.states.base_classes.KNoTEvent
 import com.cesar.knot_sdk.knot_state_machine.states.base_classes.State
-import com.cesar.knot_sdk.knot_state_machine.states.base_classes.State.Companion.PROCEED_MESSAGE
 
 object KNoTStateMachine {
 
@@ -36,7 +36,9 @@ object KNoTStateMachine {
 
     lateinit var sharedPref : SharedPreferences
 
-    fun operationResult(message : String = PROCEED_MESSAGE) {
+    private fun operationResult(event : KNoTEvent) {
+        state = state.getNextState(event)
+        state.enter()
     }
 
     private fun waitForResponse() {
@@ -76,4 +78,72 @@ object KNoTStateMachine {
         ).apply()
     }
 
+    fun authMessageReceived(authJson : String) {
+        val authMessage = knotMessageParser.parseAuthStatus(authJson)
+        val authEvent : KNoTEvent
+        val thingId = getUUID()
+
+        if (authMessage.id == thingId) {
+            authEvent = if(authMessage.error == "null") KNoTEvent.AuthOk(authMessage)
+                        else KNoTEvent.AuthNotOk(authMessage)
+            operationResult(authEvent)
+        }
+    }
+
+    fun registerMessageReceived(regJson : String) {
+        val regMessage = knotMessageParser.parseDeviceRegistered(regJson)
+        val regEvent : KNoTEvent
+        val thingId = getUUID()
+
+        if(regMessage.id == thingId) {
+            regEvent = if(regMessage.error == "null") KNoTEvent.RegOK(regMessage)
+                       else KNoTEvent.RegNotOk(regMessage)
+            operationResult(regEvent)
+        }
+    }
+
+    fun schemaUpdateMessageReceived(schemaJson : String) {
+        val schemaMessage = knotMessageParser.parseSchemaStatus(schemaJson)
+        val thingId = getUUID()
+        val schemaEvent : KNoTEvent
+
+        if (schemaMessage.id == thingId) {
+            schemaEvent = if (schemaMessage.error == "null") KNoTEvent.SchemaOk(schemaMessage)
+            else KNoTEvent.SchemaNotOk(schemaMessage)
+            operationResult(schemaEvent)
+        }
+    }
+
+    fun unregisterMessageReceived(removedJson : String) {
+        val removedMessage = knotMessageParser.parseDeviceRemoved(removedJson)
+        val thingId = getUUID()
+        val removedEvent : KNoTEvent
+
+        if (removedMessage.id == thingId) {
+            removedEvent = KNoTEvent.UnregisterEvent(removedMessage)
+            operationResult(removedEvent)
+        }
+    }
+
+    fun dataRequestMessageReceived(dataPublishJson : String) {
+        val dataPublishMessage = knotMessageParser.parseDataRequest(dataPublishJson)
+        val thingId = getUUID()
+        val dataPublishEvent : KNoTEvent
+
+        if(dataPublishMessage.id == thingId) {
+            dataPublishEvent = KNoTEvent.DataRequest(dataPublishMessage)
+            operationResult(dataPublishEvent)
+        }
+    }
+
+    fun dataUpdateMessageReceived(dataUpdateJson : String) {
+        val dataUpdateMessage = knotMessageParser.parseDataUpdate(dataUpdateJson)
+        val thingId = getUUID()
+        val dataUpdateEvent : KNoTEvent
+
+        if(dataUpdateMessage.id == thingId) {
+            dataUpdateEvent = KNoTEvent.DataUpdate(dataUpdateMessage)
+            operationResult(dataUpdateEvent)
+        }
+    }
 }
