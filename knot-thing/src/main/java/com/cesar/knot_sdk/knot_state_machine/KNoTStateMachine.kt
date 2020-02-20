@@ -2,6 +2,7 @@ package com.cesar.knot_sdk.knot_state_machine
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Looper
 import com.cesar.knot_sdk.KNoTAMQP
 import com.cesar.knot_sdk.KNoTDataManager
 import com.cesar.knot_sdk.KNoTMessageParser
@@ -10,6 +11,7 @@ import com.cesar.knot_sdk.knot_messages.KNoTMessageRegistered
 import com.cesar.knot_sdk.knot_state_machine.states.Disconnected
 import com.cesar.knot_sdk.knot_state_machine.states.base_classes.KNoTEvent
 import com.cesar.knot_sdk.knot_state_machine.states.base_classes.State
+import android.os.Handler
 
 object KNoTStateMachine {
 
@@ -27,6 +29,14 @@ object KNoTStateMachine {
     lateinit var context : Context
     lateinit var thingName : String
 
+    private val looper = Looper.myLooper()
+    private val timerHandler = Handler(looper)
+    private val timeoutEvent = Runnable {
+        operationResult(KNoTEvent.Timeout)
+    }
+
+    var STANDARD_TIMEOUT : Long = 30000
+
     fun schemaChanged() = false
 
     val PREF_ID = "preference file key"
@@ -37,16 +47,20 @@ object KNoTStateMachine {
     lateinit var sharedPref : SharedPreferences
 
     private fun operationResult(event : KNoTEvent) {
+        stopTimeout()
         state = state.getNextState(event)
         state.enter()
+        startTimeout()
     }
 
-    private fun waitForResponse() {
-        TODO("This method will create a timer that checks for a timeout for the request")
-    }
+    private fun startTimeout(timeout : Long = STANDARD_TIMEOUT) =
+        timerHandler.postDelayed(timeoutEvent, timeout)
+
+    private fun stopTimeout() = timerHandler.removeCallbacks(timeoutEvent)
 
     fun enterState() {
         state.enter()
+        startTimeout()
     }
 
     fun getUUID() = sharedPref.getString(
