@@ -3,6 +3,7 @@ package com.cesar.knot_sdk
 import com.cesar.knot_sdk.knot_messages.KNoTMessageAuthenticated
 import com.cesar.knot_sdk.knot_messages.KNoTMessageRegistered
 import com.cesar.knot_sdk.knot_messages.KNoTMessageRemoved
+import com.cesar.knot_sdk.knot_messages.KNoTMessageRequestData
 import com.cesar.knot_sdk.knot_messages.KNoTMessageSchemaResp
 import com.cesar.knot_sdk.knot_messages.KNoTMessageUnregister
 import com.cesar.knot_sdk.knot_state_machine.states.Disconnected
@@ -147,4 +148,18 @@ class ErrorTest {
 
         assert(nextState is Error)
     }
+
+    @Test
+    fun dataRequest_isError() {
+        val randomSensorIdList = mutableListOf<Int>()
+        val dataRequest = KNoTMessageRequestData(
+            randomThingId,
+            randomSensorIdList
+        )
+        val dataRequestEvent = DataRequest(dataRequest)
+        val nextState = state.getNextState(dataRequestEvent)
+
+        assert(nextState is Error)
+    }
+
 }

@@ -43,11 +43,21 @@ class KNoTDataManager {
         return schemaList
     }
 
-    fun getKNoTDataValues() : List<KNoTMessageDataItem> {
+    fun getAllKNoTDataValues() : List<KNoTMessageDataItem> {
         val valueList = mutableListOf<KNoTMessageDataItem>()
         knotDataPool.forEach {
             valueList.add(
                 it.toKNoTMessageData()
+            )
+        }
+        return valueList
+    }
+
+    fun getKNoTDataValues(sensorsId : List<Int>) : List<KNoTMessageDataItem> {
+        val valueList = mutableListOf<KNoTMessageDataItem>()
+        sensorsId.forEach {
+            valueList.add(
+                getKNoTDataItem(it).toKNoTMessageData()
             )
         }
         return valueList

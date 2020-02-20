@@ -7,5 +7,5 @@ package com.cesar.knot_sdk.knot_messages
  */
 data class KNoTMessageRequestData(
     val id : String,
-    val sensorIds: List<Int>?
+    val sensorIds: List<Int>
 )

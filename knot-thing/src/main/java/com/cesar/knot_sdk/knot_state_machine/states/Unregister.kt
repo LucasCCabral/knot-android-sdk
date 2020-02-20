@@ -22,6 +22,7 @@ class Unregister : State() {
         is SchemaOk        -> this
         is SchemaNotOk     -> this
         is UnregisterEvent -> this
+        is DataRequest     -> this
     }
 
 }

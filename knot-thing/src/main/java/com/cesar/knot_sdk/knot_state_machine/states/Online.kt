@@ -1,5 +1,6 @@
 package com.cesar.knot_sdk.knot_state_machine.states
 
+import com.cesar.knot_sdk.knot_messages.KNoTMessageRequestData
 import com.cesar.knot_sdk.knot_messages.KNoTMessageUpdateData
 import com.cesar.knot_sdk.knot_state_machine.KNoTStateMachine.getUUID
 import com.cesar.knot_sdk.knot_state_machine.KNoTStateMachine.knotMessager
@@ -15,7 +16,7 @@ class Online : State() {
         val thingId = getUUID()
         val updateData = KNoTMessageUpdateData(
             thingId!!,
-            knotDataManager.getKNoTDataValues()
+            knotDataManager.getAllKNoTDataValues()
         )
 
         try {
@@ -24,6 +25,16 @@ class Online : State() {
             error = NETWORK_ERROR_MESSAGE
         }
     }
+
+   fun getData(requestData : KNoTMessageRequestData) : State {
+       val requestedSensorValues = KNoTMessageUpdateData(
+           requestData.id,
+           knotDataManager.getKNoTDataValues(requestData.sensorIds)
+       )
+
+       knotMessager.publishData(requestedSensorValues)
+       return this
+   }
 
     override fun getNextState(event : KNoTEvent) = when(event) {
         is NotReady        -> Disconnected()
@@ -36,6 +47,7 @@ class Online : State() {
         is SchemaOk        -> this
         is SchemaNotOk     -> this
         is UnregisterEvent -> Unregister()
+        is DataRequest     -> getData(event.res)
     }
 
 }

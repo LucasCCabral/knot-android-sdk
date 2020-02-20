@@ -3,10 +3,12 @@ package com.cesar.knot_sdk
 import com.cesar.knot_sdk.knot_messages.KNoTMessageAuthenticated
 import com.cesar.knot_sdk.knot_messages.KNoTMessageRegistered
 import com.cesar.knot_sdk.knot_messages.KNoTMessageRemoved
+import com.cesar.knot_sdk.knot_messages.KNoTMessageRequestData
 import com.cesar.knot_sdk.knot_messages.KNoTMessageSchemaResp
 import com.cesar.knot_sdk.knot_messages.KNoTMessageUnregister
 import com.cesar.knot_sdk.knot_state_machine.KNoTStateMachine
 import com.cesar.knot_sdk.knot_state_machine.states.Disconnected
+import com.cesar.knot_sdk.knot_state_machine.states.Error
 import com.cesar.knot_sdk.knot_state_machine.states.Registering
 import com.cesar.knot_sdk.knot_state_machine.states.Schema
 import com.cesar.knot_sdk.knot_state_machine.states.Unregister
@@ -156,4 +158,16 @@ class RegisterTest {
         assert(nextState is Registering)
     }
 
+    @Test
+    fun dataRequest_isRegistering() {
+        val randomSensorIdList = mutableListOf<Int>()
+        val dataRequest = KNoTMessageRequestData(
+            randomThingId,
+            randomSensorIdList
+        )
+        val dataRequestEvent = DataRequest(dataRequest)
+        val nextState = state.getNextState(dataRequestEvent)
+
+        assert(nextState is Registering)
+    }
 }

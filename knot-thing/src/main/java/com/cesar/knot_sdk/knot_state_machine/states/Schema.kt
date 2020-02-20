@@ -37,6 +37,7 @@ class Schema : State() {
         is SchemaOk        -> Online()
         is SchemaNotOk     -> Error()
         is UnregisterEvent -> Unregister()
+        is DataRequest     -> this
     }
 
 }

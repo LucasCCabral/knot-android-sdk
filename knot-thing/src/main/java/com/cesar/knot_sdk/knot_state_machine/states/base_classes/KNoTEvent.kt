@@ -3,6 +3,7 @@ package com.cesar.knot_sdk.knot_state_machine.states.base_classes
 import com.cesar.knot_sdk.knot_messages.KNoTMessageAuthenticated
 import com.cesar.knot_sdk.knot_messages.KNoTMessageRegistered
 import com.cesar.knot_sdk.knot_messages.KNoTMessageRemoved
+import com.cesar.knot_sdk.knot_messages.KNoTMessageRequestData
 import com.cesar.knot_sdk.knot_messages.KNoTMessageSchemaResp
 
 sealed class KNoTEvent {
@@ -16,4 +17,5 @@ sealed class KNoTEvent {
     class SchemaOk(val res : KNoTMessageSchemaResp)        : KNoTEvent()
     class SchemaNotOk(val res : KNoTMessageSchemaResp)     : KNoTEvent()
     class UnregisterEvent(val res : KNoTMessageRemoved)    : KNoTEvent()
+    class DataRequest(val res : KNoTMessageRequestData)    : KNoTEvent()
 }
