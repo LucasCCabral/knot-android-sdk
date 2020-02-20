@@ -36,6 +36,11 @@ class Online : State() {
        return this
    }
 
+    private fun updateData(updateData : KNoTMessageUpdateData) : State {
+        knotDataManager.updateKNoTData(updateData.data)
+        return this
+    }
+
     override fun getNextState(event : KNoTEvent) = when(event) {
         is NotReady        -> Disconnected()
         is Ready           -> this
@@ -48,6 +53,7 @@ class Online : State() {
         is SchemaNotOk     -> this
         is UnregisterEvent -> Unregister()
         is DataRequest     -> getData(event.res)
+        is DataUpdate      -> updateData(event.res)
     }
 
 }

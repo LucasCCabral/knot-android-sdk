@@ -42,6 +42,7 @@ class Registering : State() {
         is SchemaNotOk     -> this
         is UnregisterEvent -> this
         is DataRequest     -> this
+        is DataUpdate      -> this
     }
 
 }

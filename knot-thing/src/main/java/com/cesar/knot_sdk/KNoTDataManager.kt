@@ -2,7 +2,6 @@ package com.cesar.knot_sdk
 
 import com.cesar.knot_sdk.knot_data.KNoTData
 import com.cesar.knot_sdk.knot_data.KNoTSchema
-import com.cesar.knot_sdk.knot_data.KNoTValue
 import com.cesar.knot_sdk.knot_messages.KNoTMessageDataItem
 
 class KNoTDataManager {
@@ -18,7 +17,7 @@ class KNoTDataManager {
         return knotDataPool[0]
     }
 
-    fun updateKNoTData(knotData : List<KNoTValue<Any>>) {
+    fun updateKNoTData(knotData : List<KNoTMessageDataItem>) {
         knotData.forEach {
             val knoTDataItem = getKNoTDataItem(it.sensorId)
             knoTDataItem.updateValue(it)

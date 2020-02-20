@@ -208,6 +208,26 @@ class OnlineTest {
         assert(nextState is Online)
     }
 
+    @Test
+    fun dataUpdate_isOnline() {
+        val randomDataItemList = mutableListOf<KNoTMessageDataItem>()
+        val dataUpdate = KNoTMessageUpdateData(
+            randomThingId,
+            randomDataItemList
+        )
+        val dataUpdateEvent = DataUpdate(dataUpdate)
+
+        every {
+            KNoTStateMachine.knotDataManager.updateKNoTData(
+                randomDataItemList
+            )
+        } just Runs
+
+        val nextState = state.getNextState(dataUpdateEvent)
+
+        assert(nextState is Online)
+    }
+
     @After
     fun cleanup() {
         clearAllMocks()

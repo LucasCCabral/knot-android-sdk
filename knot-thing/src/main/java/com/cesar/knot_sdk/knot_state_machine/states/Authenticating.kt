@@ -55,6 +55,7 @@ class Authenticating : State() {
         is AuthNotOk        -> Unregister()
         is UnregisterEvent  -> Unregister()
         is DataRequest      -> this
+        is DataUpdate       -> this
     }
 
 }

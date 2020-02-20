@@ -5,6 +5,7 @@ import com.cesar.knot_sdk.knot_messages.KNoTMessageRegistered
 import com.cesar.knot_sdk.knot_messages.KNoTMessageRemoved
 import com.cesar.knot_sdk.knot_messages.KNoTMessageRequestData
 import com.cesar.knot_sdk.knot_messages.KNoTMessageSchemaResp
+import com.cesar.knot_sdk.knot_messages.KNoTMessageUpdateData
 
 sealed class KNoTEvent {
     object NotReady                                        : KNoTEvent()
@@ -18,4 +19,5 @@ sealed class KNoTEvent {
     class SchemaNotOk(val res : KNoTMessageSchemaResp)     : KNoTEvent()
     class UnregisterEvent(val res : KNoTMessageRemoved)    : KNoTEvent()
     class DataRequest(val res : KNoTMessageRequestData)    : KNoTEvent()
+    class DataUpdate(val res : KNoTMessageUpdateData)      : KNoTEvent()
 }

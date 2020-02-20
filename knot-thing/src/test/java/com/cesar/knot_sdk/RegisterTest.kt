@@ -1,12 +1,15 @@
 package com.cesar.knot_sdk
 
 import com.cesar.knot_sdk.knot_messages.KNoTMessageAuthenticated
+import com.cesar.knot_sdk.knot_messages.KNoTMessageDataItem
 import com.cesar.knot_sdk.knot_messages.KNoTMessageRegistered
 import com.cesar.knot_sdk.knot_messages.KNoTMessageRemoved
 import com.cesar.knot_sdk.knot_messages.KNoTMessageRequestData
 import com.cesar.knot_sdk.knot_messages.KNoTMessageSchemaResp
 import com.cesar.knot_sdk.knot_messages.KNoTMessageUnregister
+import com.cesar.knot_sdk.knot_messages.KNoTMessageUpdateData
 import com.cesar.knot_sdk.knot_state_machine.KNoTStateMachine
+import com.cesar.knot_sdk.knot_state_machine.states.Authenticating
 import com.cesar.knot_sdk.knot_state_machine.states.Disconnected
 import com.cesar.knot_sdk.knot_state_machine.states.Error
 import com.cesar.knot_sdk.knot_state_machine.states.Registering
@@ -170,4 +173,18 @@ class RegisterTest {
 
         assert(nextState is Registering)
     }
+
+    @Test
+    fun dataUpdate_isRegistering() {
+        val randomDataItemList = mutableListOf<KNoTMessageDataItem>()
+        val dataUpdate = KNoTMessageUpdateData(
+            randomThingId,
+            randomDataItemList
+        )
+        val dataUpdateEvent = DataUpdate(dataUpdate)
+        val nextState = state.getNextState(dataUpdateEvent)
+
+        assert(nextState is Registering)
+    }
+
 }

@@ -38,6 +38,7 @@ class Schema : State() {
         is SchemaNotOk     -> Error()
         is UnregisterEvent -> Unregister()
         is DataRequest     -> this
+        is DataUpdate      -> this
     }
 
 }
