@@ -1,5 +1,6 @@
 package com.cesar.knot_sdk.knot_state_machine.states
 
+import com.cesar.knot_sdk.LogWrapper
 import com.cesar.knot_sdk.knot_state_machine.KNoTStateMachine
 import com.cesar.knot_sdk.knot_state_machine.states.base_classes.KNoTEvent
 import com.cesar.knot_sdk.knot_state_machine.states.base_classes.KNoTEvent.*
@@ -24,6 +25,10 @@ class Unregister : State() {
         is UnregisterEvent -> this
         is DataRequest     -> this
         is DataUpdate      -> this
+    }
+
+    override fun toString() : String {
+        return "unregister"
     }
 
 }

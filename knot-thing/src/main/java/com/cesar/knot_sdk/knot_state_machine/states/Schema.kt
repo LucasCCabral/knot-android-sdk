@@ -1,5 +1,6 @@
 package com.cesar.knot_sdk.knot_state_machine.states
 
+import com.cesar.knot_sdk.LogWrapper
 import com.cesar.knot_sdk.knot_messages.KNoTMessageUpdateSchema
 import com.cesar.knot_sdk.knot_state_machine.KNoTStateMachine.getUUID
 import com.cesar.knot_sdk.knot_state_machine.KNoTStateMachine.knotMessager
@@ -41,4 +42,7 @@ class Schema : State() {
         is DataUpdate      -> this
     }
 
+    override fun toString() : String {
+        return "schema"
+    }
 }

@@ -44,4 +44,8 @@ class Disconnected : State() {
         is DataUpdate      -> this
     }
 
+    override fun toString() : String {
+        return "disconn"
+    }
+
 }

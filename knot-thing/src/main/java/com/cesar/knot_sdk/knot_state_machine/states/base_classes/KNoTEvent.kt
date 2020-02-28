@@ -20,4 +20,22 @@ sealed class KNoTEvent {
     class UnregisterEvent(val res : KNoTMessageRemoved)    : KNoTEvent()
     class DataRequest(val res : KNoTMessageRequestData)    : KNoTEvent()
     class DataUpdate(val res : KNoTMessageUpdateData)      : KNoTEvent()
+
+    override fun toString() : String {
+        return when(this){
+            is NotReady        -> "NotReady"
+            is Ready           -> "Ready"
+            is Timeout         -> "Timeout"
+            is RegOK           -> "RegOk"
+            is RegNotOk        -> "RegNotOk"
+            is AuthNotOk       -> "AuthNotOk"
+            is AuthOk          -> "AuthOk"
+            is SchemaOk        -> "SchemaOk"
+            is SchemaNotOk     -> "SchemaNotOk"
+            is UnregisterEvent -> "UnregisterEvent"
+            is DataRequest     -> "DataRequest"
+            is DataUpdate      -> "DataUpdate"
+        }
+    }
+
 }

@@ -58,4 +58,8 @@ class Authenticating : State() {
         is DataUpdate       -> this
     }
 
+    override fun toString() : String {
+        return "auth"
+    }
+
 }

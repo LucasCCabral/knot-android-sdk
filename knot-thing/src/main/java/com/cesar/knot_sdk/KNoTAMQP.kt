@@ -159,6 +159,7 @@ class KNoTAMQP(username : String, password : String, hostname : String, port : I
                     body: ByteArray
                 ) {
                     val message = String(body)
+                    LogWrapper.log("Message received: $message")
                     when (envelope.routingKey) {
                         BINDING_KEY_REGISTERED    -> KNoTStateMachine.registerMessageReceived(message)
                         BINDING_KEY_UNREGISTER    -> KNoTStateMachine.unregisterMessageReceived(message)

@@ -5,6 +5,7 @@ import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
+import com.cesar.knot_sdk.LogWrapper
 import com.cesar.knot_sdk.knot_messages.KNoTMessageRequestData
 import com.cesar.knot_sdk.knot_messages.KNoTMessageUpdateData
 import com.cesar.knot_sdk.knot_state_machine.KNoTStateMachine.getUUID
@@ -91,4 +92,7 @@ class Online : State() {
         is DataUpdate      -> updateData(event.res)
     }
 
+    override fun toString() : String {
+        return "online"
+    }
 }

@@ -24,4 +24,7 @@ class Error : State() {
         is DataUpdate      -> this
     }
 
+    override fun toString() : String {
+        return "error"
+    }
 }

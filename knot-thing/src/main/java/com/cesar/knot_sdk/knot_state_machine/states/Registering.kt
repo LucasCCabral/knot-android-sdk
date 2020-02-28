@@ -45,4 +45,8 @@ class Registering : State() {
         is DataUpdate      -> this
     }
 
+    override fun toString() : String {
+        return "register"
+    }
+
 }
