@@ -94,6 +94,15 @@ object KNoTStateMachine {
         ).apply()
     }
 
+
+    fun readyEventReceived() {
+        operationResult(KNoTEvent.Ready)
+    }
+
+    fun notReadyEventReceived() {
+        operationResult(KNoTEvent.NotReady)
+    }
+
     fun authMessageReceived(authJson : String) {
         val authMessage = knotMessageParser.parseAuthStatus(authJson)
         val authEvent : KNoTEvent

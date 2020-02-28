@@ -1,5 +1,6 @@
 package com.cesar.knot_sdk
 
+import com.cesar.knot_sdk.knot_state_machine.KNoTStateMachine
 import org.jetbrains.anko.doAsync
 
 /**
@@ -54,6 +55,9 @@ class KNoTAMQPFactory {
                 knotAMQP.BINDING_KEY_DATA_PUBLISH
             )
 
+            knotAMQP.createConsumer(knotAMQP.QUEUE_NAME_FOG_OUT)
+
+            KNoTStateMachine.readyEventReceived()
         }
     }
 }
